@@ -17,7 +17,7 @@ def rotate(rotate):
 def text(string, x_axis, y_axis, font_size):
 ```
 
-## example
+## example 1
 ```python
 # ESP32 Pin assignment
 scl = 22
@@ -37,3 +37,17 @@ lcd.text('Font 24x24', 0, 30, 24)
 lcd.show()
 ```
 ![example 1](figure_1.png "Image Title")
+
+## example 2
+```python
+lcd.text('Font 32x32', 0, 0, 32)
+lcd.show()
+```
+![example 1](figure_2.png "Image Title")
+
+## example 3
+```python
+lcd.rotate(2)
+```
+![example 1](figure_3.png "Image Title")
+
