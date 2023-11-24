@@ -36,7 +36,7 @@ lcd.text('Font 16x16', 0, 10, 16)
 lcd.text('Font 24x24', 0, 30, 24)
 lcd.show()
 ```
-![example 1](figure_1.png "Image Title")
+![example 1](/image/figure_1.png "Image Title")
 
 ## example 2
 ```python
