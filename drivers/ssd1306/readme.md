@@ -36,18 +36,18 @@ lcd.text('Font 16x16', 0, 10, 16)
 lcd.text('Font 24x24', 0, 30, 24)
 lcd.show()
 ```
-![example 1](/Feinmechaniker/micropython/tree/main/drivers/ssd1306/image)/figure_1.png")
+![example 1](https://github.com/Feinmechaniker/micropython/blob/main/drivers/ssd1306/image/figure_1.png)
 
 ## example 2
 ```python
 lcd.text('Font 32x32', 0, 0, 32)
 lcd.show()
 ```
-![example 2](figure_2.png "Image Title")
+![example 2](https://github.com/Feinmechaniker/micropython/blob/main/drivers/ssd1306/image/figure_2.png)
 
 ## example 3
 ```python
 lcd.rotate(2)
 ```
-![example 3](figure_3.png "Image Title")
+![example 3](https://github.com/Feinmechaniker/micropython/blob/main/drivers/ssd1306/image/figure_3.png)
 
