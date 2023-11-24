@@ -1,2 +1,2 @@
-# micropython
+# MicroPython
 The MicroPython project
