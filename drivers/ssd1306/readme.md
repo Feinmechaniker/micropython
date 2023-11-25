@@ -5,13 +5,13 @@ This driver is based on the SSD1306 driver from Adafruit. It is extended by the 
 * 24x24
 * 32x32
 
-### Wiring for KY-040 encoder
+### Wiring for OLED SSD1306 Display
 | OLED Pin       | Connection           | 
 | ------------- |:-------------:| 
-| +      | 3.3V | 
-| GND     | Ground      |  
-| DT | GPIO pin      |  
-| CLK | GPIO pin      | 
+| GND     | Ground| 
+| Vcc     | +3.3V or 5V      |  
+| SCL | GPIO pin      |  
+| SDA | GPIO pin      | 
 
 ## API
 ```python
