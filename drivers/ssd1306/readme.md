@@ -5,6 +5,14 @@ This driver is based on the SSD1306 driver from Adafruit. It is extended by the 
 * 24x24
 * 32x32
 
+### Wiring for KY-040 encoder
+| OLED Pin       | Connection           | 
+| ------------- |:-------------:| 
+| +      | 3.3V | 
+| GND     | Ground      |  
+| DT | GPIO pin      |  
+| CLK | GPIO pin      | 
+
 ## API
 ```python
 def init_i2c(scl, sda, width, height):
