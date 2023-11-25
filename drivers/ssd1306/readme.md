@@ -59,3 +59,9 @@ lcd.rotate(2)
 ```
 ![example 3](https://github.com/Feinmechaniker/micropython/blob/main/drivers/ssd1306/image/figure_3.png)
 
+## Acknowlegements
+
+Other implementation ideas and techniques taken from:
+
+https://github.com/ch686/ssd1306py-micropython
+
