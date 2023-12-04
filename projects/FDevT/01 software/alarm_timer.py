@@ -15,6 +15,14 @@ class CountdownTimer:
     ALARM_OFF = 1
     ALARM_ON = 0
     
+    # ESP32 Pin assignment for OLED and I2C
+    oled_width = 128 
+    oled_height = 64
+    scl = 22
+    sda = 21
+    lcd.init_i2c(scl, sda, oled_width, oled_height)
+
+    
     def __init__(self):
         """Initialize the CountdownTimer."""
         self.timer = Timer(-1)  # next Timer
@@ -70,13 +78,8 @@ class CountdownTimer:
         """Beep befor the timer is finished."""      
         self.sec_before = seconds_before
 
-# ESP32 Pin assignment for OLED and I2C
-oled_width = 128 
-oled_height = 64
-scl = 22
-sda = 21
 
-lcd.init_i2c(scl, sda, oled_width, oled_height)
-lcd.contrast(100)  # OLED-Contrast, max contrast is 255
+
+
 
 
