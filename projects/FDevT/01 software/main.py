@@ -16,6 +16,7 @@ from user_state_functions import *
 # Hardware 
 button_pins = [32, 33, 25]  # Pin 32 is UP, Pin 33 is ENTER, Pin 25 is DOWN
 
+
 # Function for initialization
 def initialize():
     button_handler = ButtonHandler(button_pins)
