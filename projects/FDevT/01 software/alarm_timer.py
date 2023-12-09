@@ -8,7 +8,9 @@ __version__ = '1.0'
 __author__ = 'Joe Grabow'
 
 from machine import Timer, Pin
+import time
 import ssd1306py as lcd
+from hardware import *
 
 
 class CountdownTimer:
@@ -17,15 +19,16 @@ class CountdownTimer:
     ALARM_ON = 0
     
     # ESP32 Pin assignment for OLED and I2C
-    oled_width = 128 
-    oled_height = 64
-    scl = 22
-    sda = 21
-    lcd.init_i2c(scl, sda, oled_width, oled_height)
+#   oled_width = 128 
+#    oled_height = 64
+#    scl = 22
+#    sda = 21
+    lcd.init_i2c(SCL, SDA, OLED_WIDTH, OLED_HEIGHT)
 
 
-    motor_pin = 2  # GPIO-Pin H-Bridge Change
-    motor = Pin(motor_pin, Pin.OUT)
+#    motor_pin = 2  # GPIO-Pin H-Bridge Change
+    motor = Pin(MOTOR_PIN, Pin.OUT)
+    beep = Pin(BEEP_PIN, Pin.OUT)
 
     def __init__(self):
         """Initialize the CountdownTimer."""
@@ -56,7 +59,10 @@ class CountdownTimer:
         oled_time = f"{r_min:02d}:{r_sec:02d}"
         lcd.text(oled_time, 0, 16, 32)
         lcd.show()
-        print(oled_time)
+        
+        if debug:
+            print(oled_time)
+        
 
     def timer_callback(self, timer):
         """Callback for Timer-Interrupt."""
@@ -69,16 +75,29 @@ class CountdownTimer:
 
         # Beep x seconds before timer ends
         elif self.total_seconds == self.sec_before:
-            print("Beep")
+            
+            if debug:
+                print('Beep')
+            
+            self.beep.on()
+            time.sleep_ms(250)
+            self.beep.off()
 
     def start_timer(self):  # only start without changing the time
         """Start Timer."""
-        print('Timer Start')
+
+        if debug:
+            print('Start Timer')
+
         self.is_initialized_0 = True   
         self.timer.init(period=1000, mode=Timer.PERIODIC, callback=self.timer_callback)
 
     def pause_timer(self):
-        """Wait Timer."""        
+        """Wait Timer."""
+        
+        if debug:
+            print('Wait Timer')
+        
         if self.is_initialized_0:
             self.is_initialized_0 = False
             self.timer.deinit()

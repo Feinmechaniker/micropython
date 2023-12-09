@@ -11,15 +11,16 @@ from machine import Pin
 from button_handle import ButtonHandler
 from state_machine import StateMachine
 from user_state_functions import *
+from hardware import BUTTON_PINS
 
 
 # Hardware 
-button_pins = [32, 33, 25]  # Pin 32 is UP, Pin 33 is ENTER, Pin 25 is DOWN
+#BUTTON_PINS = [32, 33, 25]  # Pin 32 is UP, Pin 33 is ENTER, Pin 25 is DOWN
 
 
 # Function for initialization
 def initialize():
-    button_handler = ButtonHandler(button_pins)
+    button_handler = ButtonHandler(BUTTON_PINS)
     state_machine = StateMachine()
     return button_handler, state_machine
 

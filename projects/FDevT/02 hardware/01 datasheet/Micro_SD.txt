@@ -1,0 +1,8 @@
+Micro-SD Shield
+
+3,3V: 3,3V Stromversorgung
+D8: SS (CS Chip Select)
+D7: MOSI
+D6: MISO
+D5: CLK
+GND: Masse

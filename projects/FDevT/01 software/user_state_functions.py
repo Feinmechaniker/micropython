@@ -12,14 +12,15 @@ import ujson
 from alarm_timer import CountdownTimer
 import init
 from machine import Pin, PWM
+from hardware import PWM_PIN, PWM_FREQUENCY, debug
 
 # Debugging
-debug = True
+# debug = True
 
 # PWM functions
-pwm_frequency = 10
-pwm_pin = 15  # GPIO-Pin for Motor Drive
-pwm = PWM(Pin(pwm_pin),pwm_frequency)
+#pwm_frequency = 10
+#pwm_pin = 15  # GPIO-Pin for Motor Drive
+pwm = PWM(Pin(PWM_PIN),PWM_FREQUENCY)
 pwm.duty(0)  # PWM off
 
 count_timer = CountdownTimer()  # all Timer functions

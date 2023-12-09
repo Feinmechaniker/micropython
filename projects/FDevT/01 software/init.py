@@ -3,6 +3,9 @@
 Created on Wed Nov 29 08:24:08 2023
 
 @author: Grabow
+
+Reads the configuration data from the SD card.
+If no SD card is present, the data is read from the Flash ROM.
 """
 __version__ = '1.0'
 __author__ = 'Joe Grabow'
@@ -15,9 +18,10 @@ import os
 import ujson
 import ssd1306py as lcd
 import time
+from hardware import *
 
-SD_CARD_PATH = '/sd'
-TARGET_FILE = 'default.json'
+#SD_CARD_PATH = '/sd'
+#TARGET_FILE = 'default.json'
 
 def init_sd():
     # Initialize the SD card
@@ -25,8 +29,11 @@ def init_sd():
     # MOSI pin to ESP32 GPIO12
     # SCK pin to ESP32 GPIO14
     # CS pin to ESP32 GPIO27
-    spi=SoftSPI(1,sck=Pin(14),mosi=Pin(12),miso=Pin(13))
-    sd=sdcard.SDCard(spi,Pin(27))
+#    spi=SoftSPI(1,sck=Pin(14),mosi=Pin(12),miso=Pin(13))
+#    sd=sdcard.SDCard(spi,Pin(27))
+
+    spi=SoftSPI(1,sck=SCK,mosi=MOSI,miso=MISO)
+    sd=sdcard.SDCard(spi,CS)
 
     # Create a instance of MicroPython Unix-like Virtual File System (VFS),
     vfs=os.VfsFat(sd)
@@ -89,11 +96,11 @@ def read_default_config(file_list):
  
 def oled():
     # ESP32 Pin assignment for OLED and I2C
-    oled_width = 128 
-    oled_height = 64
-    scl = 22
-    sda = 21
-    lcd.init_i2c(scl, sda, oled_width, oled_height)
+#    oled_width = 128 
+#    oled_height = 64
+#    scl = 22
+#    sda = 21
+    lcd.init_i2c(SCL, SDA, OLED_WIDTH, OLED_HEIGHT)
 
 def get_config():
     data = []
