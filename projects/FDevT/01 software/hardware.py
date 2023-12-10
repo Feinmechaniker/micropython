@@ -31,6 +31,7 @@ OLED_HEIGHT = 64
 PWM_FREQUENCY = 10
 PWM_PIN = 15  # GPIO-Pin for Motor Drive
 MOTOR_PIN = 2  # GPIO-Pin H-Bridge Change
+MOTOR_2_PIN = 16
 
 # Beep
 BEEP_PIN = 4

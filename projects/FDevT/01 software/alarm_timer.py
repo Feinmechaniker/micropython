@@ -7,7 +7,7 @@ Created on Wed Nov 29 08:24:08 2023
 __version__ = '1.0'
 __author__ = 'Joe Grabow'
 
-from machine import Timer, Pin
+from machine import Timer, Pin, PWM
 import time
 import ssd1306py as lcd
 from hardware import *
@@ -25,8 +25,8 @@ class CountdownTimer:
 #    sda = 21
     lcd.init_i2c(SCL, SDA, OLED_WIDTH, OLED_HEIGHT)
 
-
 #    motor_pin = 2  # GPIO-Pin H-Bridge Change
+    pwm = PWM(Pin(PWM_PIN),PWM_FREQUENCY)
     motor = Pin(MOTOR_PIN, Pin.OUT)
     beep = Pin(BEEP_PIN, Pin.OUT)
 
@@ -108,9 +108,14 @@ class CountdownTimer:
         self.sec_before = seconds_before
     
     def change_motor_on(self, change):
-        
+        from user_state_functions import pwm_speed
         def toggle_motor(timer):
-            self.motor.value(not self.motor.value())  # changing the direction of rotation 
+            self.pwm.duty(0)  # first stop the motor
+            self.motor.value(not self.motor.value())  # changing the direction of rotation
+            self.pwm.duty(pwm_speed)  # motor back to old speed
+            
+            if debug:
+                print('PWM-Speed :', pwm_speed)
 
         self.motor_timer = Timer(1)  # use Timer 1
         

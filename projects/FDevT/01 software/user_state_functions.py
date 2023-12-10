@@ -12,7 +12,7 @@ import ujson
 from alarm_timer import CountdownTimer
 import init
 from machine import Pin, PWM
-from hardware import PWM_PIN, PWM_FREQUENCY, debug
+from hardware import PWM_PIN, PWM_FREQUENCY, MOTOR_2_PIN, debug
 
 # Debugging
 # debug = True
@@ -20,8 +20,11 @@ from hardware import PWM_PIN, PWM_FREQUENCY, debug
 # PWM functions
 #pwm_frequency = 10
 #pwm_pin = 15  # GPIO-Pin for Motor Drive
+#Speed = 50  # default, later overwritten by SD card
+
 pwm = PWM(Pin(PWM_PIN),PWM_FREQUENCY)
 pwm.duty(0)  # PWM off
+motor_2 = Pin(MOTOR_2_PIN, Pin.OUT)  # Motor 2 without change of direction
 
 count_timer = CountdownTimer()  # all Timer functions
 
@@ -32,7 +35,10 @@ D_Min, D_Sec = data["D_Min"], data["D_Sec"]
 S_Min, S_Sec = data["S_Min"], data["S_Sec"]
 F_Min, F_Sec = data["F_Min"], data["F_Sec"]
 Speed, Change = data["Speed"], data["Change"]
-pwm_speed = int((Speed / 100) * 1023) 
+pwm_speed = int((Speed / 100) * 1023)  # overwrites the global value of the variable
+
+if debug:
+    print('PWM Speed :', pwm_speed)
 
 DEV_oled_time = f"{D_Min:02d}:{D_Sec:02d}"
 STOP_oled_time = f"{S_Min:02d}:{S_Sec:02d}"
@@ -44,8 +50,10 @@ def s_f_1():
     # MAIN State
     # PROCES
     # RECIPES
+    
     if debug:
         print('State 1')
+    
     lcd.clear()
     lcd.text('  FDevT 1.0', 0, 0, 16)
     lcd.text('> PROCESS', 0, 20, 16)
@@ -63,7 +71,8 @@ def s_f_2():
     count_timer.pause_timer()  # stop timer when running 
     count_timer.set_timer(D_Min, D_Sec)  # initialise Timer
     count_timer.change_motor_off()  # changing the direction of rotation off
-    pwm.duty(0)  # PWM off  
+    pwm.duty(0)  # PWM off
+    motor_2.off()
 
     # OLED Display
     lcd.clear()
@@ -100,6 +109,7 @@ def s_f_3():
     
     count_timer.start_timer()  # DEV-Timer run
     pwm.duty(pwm_speed)  # PWM on
+    motor_2.on()
     if Change != 0:
         count_timer.change_motor_on(Change)  # changing the direction of rotation on
 
@@ -111,7 +121,8 @@ def s_f_4():
         print('State 4')
         
     count_timer.pause_timer()
-    pwm.duty(0)  # PWM off    
+    pwm.duty(0)  # PWM off
+    motor_2.off()
     count_timer.change_motor_off()  # changing the direction of rotation off
     
     [r_min, r_sec, t_sec] = count_timer.get_remaining_time()  # determine remaining time
@@ -139,7 +150,8 @@ def s_f_5():
     count_timer.pause_timer()  # stop timer when running 
     count_timer.set_timer(S_Min, S_Sec)  # initialise STOP-Timer
     count_timer.change_motor_off()  # changing the direction of rotation off
-    pwm.duty(0)  # PWM off      
+    pwm.duty(0)  # PWM off
+    motor_2.off()
     
     oled_time = f"{S_Min:02d}:{S_Sec:02d}"
     
@@ -177,7 +189,8 @@ def s_f_6():
     lcd.show()
 
     count_timer.start_timer()  # STOP-Timer run
-    pwm.duty(pwm_speed)  # PWM on    
+    pwm.duty(pwm_speed)  # PWM on
+    motor_2.on()
     if Change != 0:
         count_timer.change_motor_on(Change)  # changing the direction of rotation on
 
@@ -189,7 +202,8 @@ def s_f_7():
         print('State 7')
         
     count_timer.pause_timer()
-    pwm.duty(0)  # PWM off    
+    pwm.duty(0)  # PWM off
+    motor_2.off()
     count_timer.change_motor_off()  # changing the direction of rotation off 
     
     [r_min, r_sec, t_sec] = count_timer.get_remaining_time()  # determine remaining time
@@ -217,7 +231,8 @@ def s_f_8():
     count_timer.pause_timer()  # stop timer when running 
     count_timer.set_timer(F_Min, F_Sec)  # initialise FIX-Timer
     count_timer.change_motor_off()  # changing the direction of rotation off
-    pwm.duty(0)  # PWM off  
+    pwm.duty(0)  # PWM off
+    motor_2.off()
     
     oled_time = f"{F_Min:02d}:{F_Sec:02d}"
 
@@ -255,7 +270,8 @@ def s_f_9():
     lcd.show()
     
     count_timer.start_timer()  # FIX-Timer run
-    pwm.duty(pwm_speed)  # PWM on    
+    pwm.duty(pwm_speed)  # PWM on
+    motor_2.on()
     if Change != 0:
         count_timer.change_motor_on(Change)  # changing the direction of rotation on
 
@@ -268,6 +284,7 @@ def s_f_10():
 
     count_timer.pause_timer()
     pwm.duty(0)  # PWM off
+    motor_2.off()
     count_timer.change_motor_off()  # changing the direction of rotation off   
     
     [r_min, r_sec, t_sec] = count_timer.get_remaining_time()  # determine remaining time
@@ -290,7 +307,8 @@ def s_f_11():
         print('State 11')
     
     count_timer.pause_timer()
-    pwm.duty(0)  # PWM off    
+    pwm.duty(0)  # PWM off
+    motor_2.off()
     count_timer.change_motor_off()  # changing the direction of rotation off 
     
     # Oled Menue    
