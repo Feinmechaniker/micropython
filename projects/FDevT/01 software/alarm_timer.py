@@ -27,14 +27,16 @@ class CountdownTimer:
 
 #    motor_pin = 2  # GPIO-Pin H-Bridge Change
     pwm = PWM(Pin(PWM_PIN),PWM_FREQUENCY)
-    motor = Pin(MOTOR_PIN, Pin.OUT)
+    motor_A1 = Pin(MOTOR_PIN_A1, Pin.OUT)
+    motor_A2 = Pin(MOTOR_PIN_A2, Pin.OUT) 
     beep = Pin(BEEP_PIN, Pin.OUT)
 
+ 
     def __init__(self):
         """Initialize the CountdownTimer."""
         self.timer = Timer(0)  # use Timer 0
         self.alarm_set = self.ALARM_OFF
-        self.sec_before = 5
+        self.sec_before = 10
         self.is_initialized_0 = False
         self.is_initialized_1 = False
 
@@ -109,16 +111,21 @@ class CountdownTimer:
     
     def change_motor_on(self, change):
         from user_state_functions import pwm_speed
+        
         def toggle_motor(timer):
             self.pwm.duty(0)  # first stop the motor
-            self.motor.value(not self.motor.value())  # changing the direction of rotation
+            self.motor_A1.value(not self.motor_A1.value())  # changing the direction of rotation
+            self.motor_A2.value(not self.motor_A2.value())  # changing the direction of rotation
             self.pwm.duty(pwm_speed)  # motor back to old speed
             
             if debug:
                 print('PWM-Speed :', pwm_speed)
+                print('A1 :', self.motor_A1.value())
+                print('A2 :', self.motor_A2.value())
 
+        self.motor_A1.on()  # startdirection ist CW
+        self.motor_A2.off()  # startdirection is CW
         self.motor_timer = Timer(1)  # use Timer 1
-        
         self.is_initialized_1 = True        
         interval_ms = change * 1000
         self.motor_timer.init(period=interval_ms, mode=Timer.PERIODIC, callback=toggle_motor)
@@ -127,6 +134,8 @@ class CountdownTimer:
         if self.is_initialized_1:
             self.is_initialized_1 = False
             self.motor_timer.deinit()
-            self.motor.value(0)
+            self.pwm.duty(0)
+            self.motor_A1.on()  # short brake
+            self.motor_A2.on()  # short brake
 
 

@@ -110,8 +110,10 @@ def s_f_3():
     count_timer.start_timer()  # DEV-Timer run
     pwm.duty(pwm_speed)  # PWM on
     motor_2.on()
-    if Change != 0:
+    if Change != 0:  # Change Time
         count_timer.change_motor_on(Change)  # changing the direction of rotation on
+    else:
+        count_timer.change_motor_on(3600)  # large time für changing
 
 # PROCESS DEV-Timer wait
 def s_f_4():
@@ -193,6 +195,8 @@ def s_f_6():
     motor_2.on()
     if Change != 0:
         count_timer.change_motor_on(Change)  # changing the direction of rotation on
+    else:
+        count_timer.change_motor_on(3600)  # large time für changing        
 
 # PROCESS STOP-Timer wait
 def s_f_7():
@@ -274,6 +278,8 @@ def s_f_9():
     motor_2.on()
     if Change != 0:
         count_timer.change_motor_on(Change)  # changing the direction of rotation on
+    else:
+        count_timer.change_motor_on(3600)  # large time für changing
 
 # PROCESS FIX-Timer wait
 def s_f_10():
